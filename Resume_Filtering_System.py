@@ -12,7 +12,7 @@ import pandas as pd
 import re
 nlp = spacy.load("en_core_web_sm")
 
-st.set_page_config(page_title='NextReach',page_icon="📝")
+st.set_page_config(page_title='NextReach', page_icon="📝")
 
 #hide menu
 hide_menu="""
