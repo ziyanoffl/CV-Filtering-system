@@ -38,7 +38,7 @@ def local_css(file_name):
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
-local_css("style2.css")
+local_css("pages/style2.css")
 
 def add_logo():
     st.markdown(
@@ -144,14 +144,37 @@ def parse_content(text, in_skills):
     skills.append(unique_skill_set)
     # print("Extraction done")
 
-in_skills = st.text_input("Accepted skills from the applicants", placeholder= "Leadership,SQL,Pyhton,Adobe,CAD,Creo,etc")
-st.caption("Enter values separated by commas and please check before uploading resume.")
-in_skills = in_skills.lower()
-in_skills = re.sub(" +", "", in_skills)
-in_skills= in_skills.replace(",","|")
-st.write(in_skills)
+# in_skills = st.text_input("Accepted skills from the applicants", placeholder= "Leadership,SQL,Pyhton,Adobe,CAD,Creo,etc")
+# test folder
+file_dir = 'pages'
+file_name = 'df.csv'
+filepath = f"{file_dir}/{file_name}"
+df1 = pd.read_csv(filepath)
+def multiselect_page(df1):
+
+    st.header('Select items from skill ')
+    in_skills = ""
+    # Check if 'skill' is in the DataFrame
+    if 'skill' in df1.columns:
+        # Multi-select for 'skill'
+        selected_skills = st.multiselect('Accepted skills from the applicants', df1['skill'].unique())
+
+        # Filter the DataFrame based on selected skills
+        filtered_df = df1[df1['skill'].isin(selected_skills)]
+
+        # Convert the selected skills to a string
+        in_skills = "|".join(selected_skills)
+        st.write("Selected Skills as String:", in_skills)
 
 
+
+    else:
+        st.warning("The 'skill' column is not present in the DataFrame.")
+    return in_skills
+
+
+# multiselect_page(df1)
+in_skills = multiselect_page(df1)
 
 pdf_files = st.file_uploader("Please upload multiple/single RESUME", type="pdf", accept_multiple_files=True)
 
