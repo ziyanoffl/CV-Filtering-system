@@ -25,7 +25,7 @@ footer{visibility:hidden;}
 """
 
 #open css file
-with open('style2.css') as f:
+with open('D:\Industrial Consulting Project\Industrial Consulting Project\website\pages\style2.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 def add_logo():
@@ -71,7 +71,7 @@ def local_css(file_name):
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
-local_css("style2.css")
+local_css("D:\Industrial Consulting Project\Industrial Consulting Project\website\pages\style2.css")
 
 # ---- LOAD ASSETS ----
 lottie_coding = load_lottieurl("https://lottie.host/99073c09-49f0-468a-bb77-0355534e82b1/qtnfyqnBId.json")
