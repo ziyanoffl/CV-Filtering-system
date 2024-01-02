@@ -111,38 +111,36 @@ def convert_pdf_to_txt_pages(path):
 # capturing the content from the text files
 
 def parse_content(text, in_skills):
+    # Here skillset and phone_num are the template of what we are looking for in the text
+    # Here we have to define what skillset do we expect the resume of the applicant to have
+    skillset = re.compile(fr'\b(?:{in_skills})\b', flags=re.IGNORECASE)
     
-    ##### Here skillset and phone_num are the template of what we are looking in the text
-    # here we have to define what skillset do we expect the resume of applicant have 
-    
-    skillset = re.compile(in_skills) # eg skills for Data Science role
-    
-    #phone_num credit https://stackoverflow.com/a/3868861
+    # phone_num credit https://stackoverflow.com/a/3868861
     phone_num = re.compile(
-        "(\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4})"
+        r"(\d{3}[-.\s]??\d{3}[-.\s]??\d{4}|\(\d{3}\)\s*\d{3}[-.\s]??\d{4}|\d{3}[-.\s]??\d{4})"
     )
-    text = text.replace("•","")
+    
+    text = text.replace("•", "")
     text.strip()
-    text = text.replace("\n","") # removing new lines from text
-    text = text.replace("\t","") # removing tabs from text
-    text = re.sub(' +', ' ',text) ## removing all the multiple space
+    text = text.replace("\n", "")  # Removing new lines from text
+    text = text.replace("\t", "")  # Removing tabs from text
+    text = re.sub(' +', ' ', text)  # Removing all the multiple spaces
 
     doc = nlp(text)
-    name = [entity.text for entity in doc.ents if entity.label_ == "PERSON"][0]
-    ## in spacy "PERSON" if for name, and the first name is for applicant
-    ## because it may happen that a resume have multiple names in it.
-    print(name)
-    email = [str(word) for word in doc if word.like_email == True][0]
-    print(email)
-    #phone = str(re.findall(phone_num, text.lower()))
-    skills_set = re.findall(skillset, text.lower())
-    ## if may happen that a skill is mention more than once
+    name = [entity.text for entity in doc.ents if entity.label_ == "PERSON"]
+    email = [str(word) for word in doc if word.like_email == True]
+    skills_set = re.findall(skillset, text)
+    
+    # If multiple names or emails are found, take the first one
+    name = name[0] if name else ''
+    email = email[0] if email else ''
+    
     unique_skill_set = set(skills_set)
+    
     names.append(name)
     emails.append(email)
-    #phones.append(phone)
     skills.append(unique_skill_set)
-    # print("Extraction done")
+
 
 # in_skills = st.text_input("Accepted skills from the applicants", placeholder= "Leadership,SQL,Pyhton,Adobe,CAD,Creo,etc")
 # test folder
@@ -151,29 +149,30 @@ file_name = 'df.csv'
 filepath = f"{file_dir}/{file_name}"
 df1 = pd.read_csv(filepath)
 def multiselect_page(df1):
-
     st.header('Select items from skill ')
     in_skills = ""
+    
     # Check if 'skill' is in the DataFrame
     if 'skill' in df1.columns:
         # Multi-select for 'skill'
         selected_skills = st.multiselect('Accepted skills from the applicants', df1['skill'].unique())
 
-        # Filter the DataFrame based on selected skills
-        filtered_df = df1[df1['skill'].isin(selected_skills)]
-
-        # Convert the selected skills to a string
-        in_skills = "|".join(selected_skills)
-        st.write("Selected Skills as String:", in_skills)
-
-
+        # Button to trigger filtering
+        if st.button('Filter Resumes'):
+            # Convert the selected skills to a string
+            in_skills = "|".join(selected_skills)
+            st.write("Selected Skills as String:", in_skills)
+            
+            # Filter the DataFrame based on selected skills
+            filtered_df = df1[df1['skill'].isin(selected_skills)]
 
     else:
         st.warning("The 'skill' column is not present in the DataFrame.")
+    
     return in_skills
 
 
-# multiselect_page(df1)
+# Call the multiselect_page function
 in_skills = multiselect_page(df1)
 
 pdf_files = st.file_uploader("Please upload multiple/single RESUME", type="pdf", accept_multiple_files=True)
@@ -209,14 +208,19 @@ if pdf_files:
     #final_df["phone"] = final_df["phone"].apply(proper_num)
 
 
-    ## filtering out those applicant which have skills
-    for i in range(len(final_df)-1):
-        if len(final_df.iloc[i]["skills"]) == 0:
-            final_df.drop(labels=i, axis=0, inplace=True)
-        else:
-            pass
+    # Filtering out those applicants who have no skills
+    final_df = final_df[final_df["skills"].apply(len) > 0]
 
+    # Resetting the index
+    final_df.reset_index(drop=True, inplace=True)
+
+    # Displaying the filtered DataFrame
     st.dataframe(final_df)
+
+    # Debugging prints
+    print("Original DataFrame:")
+    print(final_df)
+
 
 
 
