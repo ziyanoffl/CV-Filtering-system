@@ -1,12 +1,11 @@
 import streamlit as st
 import pandas as pd
 import uuid
-import pyarrow as pa  # Import the pyarrow module
+import pyarrow as pa
 
 st.set_page_config(page_title='NextReach', page_icon="📝")
 
-#hide menu
-hide_menu="""
+hide_menu = """
 <style>
 #MainMenu{
 visibility:hidden;
@@ -21,13 +20,10 @@ footer{visibility:hidden;}
  }
 </style>
 """
-#logo
 
-# Use local CSS
 def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
 
 local_css("pages/style2.css")
 
@@ -54,25 +50,22 @@ def add_logo():
         unsafe_allow_html=True,
     )
 
-
 add_logo()
 
-
-
-# Test folder
 file_dir = 'pages'
 file_name = 'df.csv'
 filepath = f"{file_dir}/{file_name}"
 
-# Main app interface
+def is_valid_skill(skill):
+    return skill is not None and skill.strip() != '' and len(skill) <= 50
+
 def main():
     df1 = pd.read_csv(filepath)
-    skills_before_update = df1['skill'].tolist()  # Extract skill column before update
+    skills_before_update = df1['skill'].tolist()
 
     with st.sidebar.form(key='df1', clear_on_submit=True):
-        # Generate a UUID for the skill ID
         add_col1 = str(uuid.uuid4())
-        add_col2 = st.text_input('skill')
+        add_col2 = st.text_input('Skill')
         submit_add = st.form_submit_button('Add Skill')
 
     with st.sidebar.form(key='delete_form', clear_on_submit=True):
@@ -85,11 +78,16 @@ def main():
         submit_update = st.form_submit_button('Update Skill')
 
     if submit_add:
-        new_data = {'skill_ID': add_col1, 'skill': add_col2}
-        new_row = pd.DataFrame([new_data])
-        df1 = pd.concat([df1, new_row], ignore_index=True)
-        df1.to_csv(filepath, index=False)
-        st.success('Skill Added Successfully!')
+        if is_valid_skill(add_col2) and add_col2 not in df1['skill'].tolist():
+            new_data = {'skill_ID': add_col1, 'skill': add_col2}
+            new_row = pd.DataFrame([new_data])
+            df1 = pd.concat([df1, new_row], ignore_index=True)
+            df1.to_csv(filepath, index=False)
+            st.success('Skill Added Successfully!')
+        elif add_col2 in df1['skill'].tolist():
+            st.error('Skill already exists in the database!')
+        else:
+            st.error('Invalid Skill! Please enter a non-empty skill with a maximum of 50 characters.')
 
     if submit_delete:
         df1 = df1[df1['skill'] != delete_col]
@@ -101,18 +99,12 @@ def main():
         df1.to_csv(filepath, index=False)
         st.success('Skill Updated Successfully!')
 
-    # Convert skill_ID column to Arrow-compatible type
     table = pa.Table.from_pandas(df1[['skill']], schema=pa.schema([
         ('skill', pa.string())
     ]))
 
-    # st.header('Before Update')
-    # st.table(pd.DataFrame({'skill': skills_before_update}))
-
-    st.header('skills')
+    st.header('Skills')
     st.table(df1[['skill']])
 
 if __name__ == '__main__':
-    # Call the main function
     main()
-
