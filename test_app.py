@@ -5,7 +5,7 @@ from Resume_Filtering_System import convert_pdf_to_txt_pages, parse_content
 
 @pytest.fixture
 def sample_pdf_path():
-    return r"C:\My\Top-up Degree\Industrial Consulting Project\Assignment - Industrial Consulting Project\AE2 - ICP\testing cv\testing_cv_physicist.pdf"  # Replace with an actual PDF path for testing
+    return r"/Users/sharma/Desktop/untitled folder/CV-Filtering-system/tests/test.pdf"  # Replace with an actual PDF path for testing
 
 def test_convert_pdf_to_txt_pages(sample_pdf_path):
     texts, nbPages = convert_pdf_to_txt_pages(sample_pdf_path)
