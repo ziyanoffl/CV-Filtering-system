@@ -1,10 +1,10 @@
 import unittest
 from Resume_Filtering_System import (
     convert_pdf_to_txt_pages,
-    parse_content,
-    multiselect_page,
+    # parse_content,
+    # multiselect_page,
 )  # Assuming functions are in 'Resume_Filtering_System.py'
-import pandas as pd
+# import pandas as pd
 
 print("Loading tests...")
 
