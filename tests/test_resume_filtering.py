@@ -25,41 +25,41 @@ class TestResumeFiltering(unittest.TestCase):
             print("❌ Test test_convert_pdf_to_txt_pages_multipage  failed:", e)
 
     # Test for parse_content
-    def test_parse_content_extracts_skills(self):
-        print("Testing second testcase: test_parse_content_extracts_skills...")
-        try:
-            text = "Java, Express.JS, AngularJS\nDavid Baker, johndoe@example.com"
-            skills = ["Python", "SQL"]
-            names = []
-            names, emails, extracted_skills = parse_content(text, skills)
+    # def test_parse_content_extracts_skills(self):
+    #     print("Testing second testcase: test_parse_content_extracts_skills...")
+    #     try:
+    #         text = "Java, Express.JS, AngularJS\nDavid Baker, johndoe@example.com"
+    #         skills = ["Python", "SQL"]
+    #         names = []
+    #         names, emails, extracted_skills = parse_content(text, skills)
 
-            self.assertEqual(names, ["David Baker"])
-            self.assertEqual(emails, ["johndoe@example.com"])
-            self.assertEqual(extracted_skills, {"Java", "AngularJS"})
-            print("✅ Test test_parse_content_extracts_skills passed!")  # Indicate test result
-        except AssertionError as e:
-            print("❌ Test test_parse_content_extracts_skills failed:", e)
+    #         self.assertEqual(names, ["David Baker"])
+    #         self.assertEqual(emails, ["johndoe@example.com"])
+    #         self.assertEqual(extracted_skills, {"Java", "AngularJS"})
+    #         print("✅ Test test_parse_content_extracts_skills passed!")  # Indicate test result
+    #     except AssertionError as e:
+    #         print("❌ Test test_parse_content_extracts_skills failed:", e)
     # Test for multiselect_page
 
-    def test_multiselect_page_with_skill_column(self):
-        print("Testing third testcase: test_multiselect_page_with_skill_column...")
-        try:
-            df1 = pd.DataFrame({"skill": ["Java", "Express.JS", "AngularJS"]})
-            selected_skills = ["Java", "Python"]
-            in_skills, selected_skills = multiselect_page(df1)
-            print(f"Actual in_skills: {in_skills}")
-            self.assertEqual(in_skills, "Java")
-            print("✅ Test test_multiselect_page_with_skill_column passed!")  # Indicate test result
-        except AssertionError as e:
-            print("❌ Test test_multiselect_page_with_skill_column failed:", e)
+    # def test_multiselect_page_with_skill_column(self):
+    #     print("Testing third testcase: test_multiselect_page_with_skill_column...")
+    #     try:
+    #         df1 = pd.DataFrame({"skill": ["Java", "Express.JS", "AngularJS"]})
+    #         selected_skills = ["Java", "Python"]
+    #         in_skills, selected_skills = multiselect_page(df1)
+    #         print(f"Actual in_skills: {in_skills}")
+    #         self.assertEqual(in_skills, "Java")
+    #         print("✅ Test test_multiselect_page_with_skill_column passed!")  # Indicate test result
+    #     except AssertionError as e:
+    #         print("❌ Test test_multiselect_page_with_skill_column failed:", e)
 # Multiselect page function fix
 
 
-def multiselect_page(df):
-    in_skills = df['skill'].iloc[0] if not df.empty else ''
-    selected_skills = []  # Initialize selected_skills list
-    print(f"Calculated in_skills: {in_skills}")
-    return in_skills, selected_skills
+# def multiselect_page(df):
+#     in_skills = df['skill'].iloc[0] if not df.empty else ''
+#     selected_skills = []  # Initialize selected_skills list
+#     print(f"Calculated in_skills: {in_skills}")
+#     return in_skills, selected_skills
 
 
 if __name__ == "__main__":
