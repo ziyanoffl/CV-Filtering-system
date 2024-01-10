@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import uuid
-import pyarrow as pa
+# import pyarrow as pa
 
 st.set_page_config(page_title='NextReach', page_icon="📝")
 
@@ -21,18 +21,23 @@ footer{visibility:hidden;}
 </style>
 """
 
+
 def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
+
 local_css("pages/style2.css")
+
 
 def add_logo():
     st.markdown(
         """
         <style>
             [data-testid="stSidebarNav"] {
-                background-image: url(https://raw.githubusercontent.com/nabilnabawi1234/projectpython/main/logo320.png);
+                background-image: url(\
+                    https://raw.githubusercontent.com/nabilnabawi1234/projectpython/main/logo320.png\
+                );
                 background-repeat: no-repeat;
                 padding-top: 150px;
                 background-position: 5px 5px;
@@ -50,18 +55,21 @@ def add_logo():
         unsafe_allow_html=True,
     )
 
+
 add_logo()
 
 file_dir = 'pages'
 file_name = 'df.csv'
 filepath = f"{file_dir}/{file_name}"
 
+
 def is_valid_skill(skill):
     return skill is not None and skill.strip() != '' and len(skill) <= 50
 
+
 def main():
     df1 = pd.read_csv(filepath)
-    skills_before_update = df1['skill'].tolist()
+    # skills_before_update = df1['skill'].tolist()
 
     with st.sidebar.form(key='df1', clear_on_submit=True):
         add_col1 = str(uuid.uuid4())
@@ -99,12 +107,13 @@ def main():
         df1.to_csv(filepath, index=False)
         st.success('Skill Updated Successfully!')
 
-    table = pa.Table.from_pandas(df1[['skill']], schema=pa.schema([
-        ('skill', pa.string())
-    ]))
+    # table = pa.Table.from_pandas(df1[['skill']], schema=pa.schema([
+    #     ('skill', pa.string())
+    # ]))
 
     st.header('Skills')
     st.table(df1[['skill']])
+
 
 if __name__ == '__main__':
     main()

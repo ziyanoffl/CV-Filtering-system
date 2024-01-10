@@ -1,11 +1,7 @@
 import pytest
-from io import StringIO
-from click.testing import CliRunner
+
 from Resume_Filtering_System import convert_pdf_to_txt_pages, parse_content
 
-@pytest.fixture
-def sample_pdf_path():
-    return r"C:\My\Top-up Degree\Industrial Consulting Project\Assignment - Industrial Consulting Project\AE2 - ICP\testing cv\testing_cv_physicist.pdf"  # Replace with an actual PDF path for testing
 
 def test_convert_pdf_to_txt_pages(sample_pdf_path):
     texts, nbPages = convert_pdf_to_txt_pages(sample_pdf_path)
@@ -13,12 +9,13 @@ def test_convert_pdf_to_txt_pages(sample_pdf_path):
     assert isinstance(nbPages, int)
     assert len(texts) == nbPages
 
+
 def test_parse_content():
     text = "Sample resume text with skills Python and SQL"
     in_skills = "Python|SQL"
 
     # Initialize names, emails, and skills
-    names = []
+    # names = []
     emails = []
     skills = []
 
@@ -28,6 +25,7 @@ def test_parse_content():
     assert len(emails) == 0  # Replace with the expected number of emails
     assert len(skills) == 2  # Replace with the expected number of skills
     # Add more assertions based on the expected behavior
+
 
 # Add more tests as needed
 
