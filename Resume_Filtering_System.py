@@ -153,7 +153,6 @@ df1 = pd.read_csv(filepath)
 def multiselect_page(df1):
     st.header('Select items from skill')
     in_skills = ""
-
     # Check if 'skill' is in the DataFrame
     if 'skill' in df1.columns:
         # Multi-select for 'skill'
