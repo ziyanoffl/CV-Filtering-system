@@ -116,8 +116,6 @@ def convert_pdf_to_txt_pages(path):
 # capturing the content from the text files
 
 def parse_content(text, in_skills):
-  
-   
     # Here skillset and phone_num are the template of what we are looking for in the text
     # Here we have to define what skillset do we expect the resume of the applicant to have
     skillset = re.compile(fr'\b(?:{in_skills})\b', flags=re.IGNORECASE)
@@ -175,7 +173,7 @@ def multiselect_page(df1):
     else:
         st.warning("The 'skill' column is not present in the DataFrame.")
 
-    return  in_skills, selected_skills
+    return in_skills, selected_skills
 
 
 # Call the multiselect_page function and get selected_skills
