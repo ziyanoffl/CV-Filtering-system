@@ -1,13 +1,14 @@
 import unittest
 from Resume_Filtering_System import (
     convert_pdf_to_txt_pages,
-    parse_content,
-    multiselect_page,
+    # parse_content,
+    # multiselect_page,
 )  # Assuming functions are in 'Resume_Filtering_System.py'
 from pages import Report_Bug
 from pages import Update_Skill
-import pandas as pd
+# import pandas as pd
 from unittest.mock import patch
+
 print("Loading tests...")
 
 
@@ -25,34 +26,34 @@ class TestResumeFiltering(unittest.TestCase):
             print("✅ Test test_convert_pdf_to_txt_pages_multipage passed!")  # Indicate test result
         except AssertionError as e:
             print("❌ Test test_convert_pdf_to_txt_pages_multipage  failed:", e)
+
     @patch("requests.get")
     def test_load_lottieurl_success(self, mock_get):
-     print("Testing second testcase: test_load_lottieurl_success...")
-     try:
-        mock_get.return_value.status_code = 200
-        mock_get.return_value.json.return_value = {"your_lottie_data": "here"}
+        print("Testing second testcase: test_load_lottieurl_success...")
+        try:
+            mock_get.return_value.status_code = 200
+            mock_get.return_value.json.return_value = {"your_lottie_data": "here"}
 
-        lottie_data = Report_Bug.load_lottieurl("https://example.com/lottie.json")
+            lottie_data = Report_Bug.load_lottieurl("https://example.com/lottie.json")
 
-        self.assertIsNotNone(lottie_data)
-        self.assertEqual(lottie_data, {"your_lottie_data": "here"})
-        print("✅ Test test_load_lottieurl_success passed!")  # Indicate test result
-     except AssertionError as e:
-        print("❌ Test test_load_lottieurl_success failed:", e)
+            self.assertIsNotNone(lottie_data)
+            self.assertEqual(lottie_data, {"your_lottie_data": "here"})
+            print("✅ Test test_load_lottieurl_success passed!")  # Indicate test result
+        except AssertionError as e:
+            print("❌ Test test_load_lottieurl_success failed:", e)
 
     @patch("requests.get")
     def test_load_lottieurl_failure(self, mock_get):
-     print("Testing third testcase: test_load_lottieurl_failure...")
-     try:
-        mock_get.return_value.status_code = 404
+        print("Testing third testcase: test_load_lottieurl_failure...")
+        try:
+            mock_get.return_value.status_code = 404
 
-        lottie_data = Report_Bug.load_lottieurl("https://example.com/lottie.json")
+            lottie_data = Report_Bug.load_lottieurl("https://example.com/lottie.json")
 
-        self.assertIsNone(lottie_data)
-        print("✅ Test test_load_lottieurl_failure passed!")  # Indicate test result
-     except AssertionError as e:
-        print("❌ Test test_load_lottieurl_failure failed:", e)
-
+            self.assertIsNone(lottie_data)
+            print("✅ Test test_load_lottieurl_failure passed!")  # Indicate test result
+        except AssertionError as e:
+            print("❌ Test test_load_lottieurl_failure failed:", e)
 
     @patch("streamlit.text_input")
     @patch("streamlit.form_submit_button")
@@ -90,8 +91,8 @@ class TestResumeFiltering(unittest.TestCase):
             Update_Skill.main()
             print("✅ Test test_update_skill passed!")
         except AssertionError as e:
-            print(f"❌ Test test_update_skill failed: {e}")    
-    # Test for parse_content
+            print(f"❌ Test test_update_skill failed: {e}")
+            # Test for parse_content
     # def test_parse_content_extracts_skills(self):
     #     print("Testing second testcase: test_parse_content_extracts_skills...")
     #     try:
@@ -119,6 +120,8 @@ class TestResumeFiltering(unittest.TestCase):
     #         print("✅ Test test_multiselect_page_with_skill_column passed!")  # Indicate test result
     #     except AssertionError as e:
     #         print("❌ Test test_multiselect_page_with_skill_column failed:", e)
+
+
 # Multiselect page function fix
 
 
