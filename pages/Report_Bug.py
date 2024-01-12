@@ -1,14 +1,15 @@
+import warnings
+
 import requests
 import streamlit as st
 from streamlit_lottie import st_lottie
-import warnings
+
 warnings.filterwarnings("ignore")
-st.set_page_config(page_title='NextReach',page_icon="📝",layout="wide")
+st.set_page_config(page_title='NextReach', page_icon="📝", layout="wide")
 
+# hide menu
 
-#hide menu
-
-hide_menu="""
+hide_menu = """
 <style>
 #MainMenu{
 visibility:hidden;
@@ -24,16 +25,19 @@ footer{visibility:hidden;}
 </style>
 """
 
-#open css file
+# open css file
 with open('style2.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
 
 def add_logo():
     st.markdown(
         """
         <style>
             [data-testid="stSidebarNav"] {
-                background-image: url(https://raw.githubusercontent.com/nabilnabawi1234/projectpython/main/logo320.png);
+                background-image: url(\
+                    https://raw.githubusercontent.com/nabilnabawi1234/projectpython/main/logo320.png\
+                );
                 background-repeat: no-repeat;
                 padding-top: 150px;
                 background-position: 5px 5px;
@@ -51,11 +55,14 @@ def add_logo():
         unsafe_allow_html=True,
     )
 
+
 add_logo()
 st.markdown(hide_menu, unsafe_allow_html=True)
 
-original_title1 ='<p style="font-family:Arial;text-align:center; color:white; font-size: 50px;"><strong>REPORT BUG</strong></p>'
-st.write(original_title1  ,unsafe_allow_html=True)
+original_title1 = '<p style="font-family:Arial;text-align:center; color:white; font-size: 50px;">\
+    <strong>REPORT BUG</strong>\
+        </p>'
+st.write(original_title1, unsafe_allow_html=True)
 
 
 def load_lottieurl(url):
@@ -84,9 +91,8 @@ with st.container():
     st.write("---")
     st.write("##")
 
-
 contact_form = """
-    <form action="https://formsubmit.co/YOUR@MAIL.COM" method="POST">
+    <form action="https://formsubmit.co/ziyan.offl@gmail.com" method="POST">
                 <input type="hidden" name="_captcha" value="false">
                 <input type="text" name="name" placeholder="Your name" required>
                 <input type="email" name="email" placeholder="Your email" required>
@@ -100,4 +106,3 @@ with left_column:
 with right_column:
     # st.empty()
     st_lottie(lottie_coding, height=300, key="coding")
-
