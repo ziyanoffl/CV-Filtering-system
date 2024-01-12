@@ -4,8 +4,10 @@ from Resume_Filtering_System import (
     parse_content,
     multiselect_page,
 )  # Assuming functions are in 'Resume_Filtering_System.py'
+from pages import Report_Bug
+from pages import Update_Skill
 import pandas as pd
-
+from unittest.mock import patch
 print("Loading tests...")
 
 
@@ -23,7 +25,72 @@ class TestResumeFiltering(unittest.TestCase):
             print("✅ Test test_convert_pdf_to_txt_pages_multipage passed!")  # Indicate test result
         except AssertionError as e:
             print("❌ Test test_convert_pdf_to_txt_pages_multipage  failed:", e)
+    @patch("requests.get")
+    def test_load_lottieurl_success(self, mock_get):
+     print("Testing second testcase: test_load_lottieurl_success...")
+     try:
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.json.return_value = {"your_lottie_data": "here"}
 
+        lottie_data = Report_Bug.load_lottieurl("https://example.com/lottie.json")
+
+        self.assertIsNotNone(lottie_data)
+        self.assertEqual(lottie_data, {"your_lottie_data": "here"})
+        print("✅ Test test_load_lottieurl_success passed!")  # Indicate test result
+     except AssertionError as e:
+        print("❌ Test test_load_lottieurl_success failed:", e)
+
+    @patch("requests.get")
+    def test_load_lottieurl_failure(self, mock_get):
+     print("Testing third testcase: test_load_lottieurl_failure...")
+     try:
+        mock_get.return_value.status_code = 404
+
+        lottie_data = Report_Bug.load_lottieurl("https://example.com/lottie.json")
+
+        self.assertIsNone(lottie_data)
+        print("✅ Test test_load_lottieurl_failure passed!")  # Indicate test result
+     except AssertionError as e:
+        print("❌ Test test_load_lottieurl_failure failed:", e)
+
+
+    @patch("streamlit.text_input")
+    @patch("streamlit.form_submit_button")
+    def test_add_skill(self, mock_submit_button, mock_text_input):
+        mock_text_input.return_value = "New Skill"
+        mock_submit_button.return_value = True
+
+        try:
+            Update_Skill.main()
+            print("✅ Test test_add_skill passed!")
+        except AssertionError as e:
+            print(f"❌ Test test_add_skill failed: {e}")
+
+    @patch("streamlit.selectbox")
+    @patch("streamlit.form_submit_button")
+    def test_delete_skill(self, mock_submit_button, mock_selectbox):
+        mock_selectbox.return_value = "SkillToDelete"
+        mock_submit_button.return_value = True
+
+        try:
+            Update_Skill.main()
+            print("✅ Test test_delete_skill passed!")
+        except AssertionError as e:
+            print(f"❌ Test test_delete_skill failed: {e}")
+
+    @patch("streamlit.selectbox")
+    @patch("streamlit.text_input")
+    @patch("streamlit.form_submit_button")
+    def test_update_skill(self, mock_submit_button, mock_text_input, mock_selectbox):
+        mock_selectbox.return_value = "SkillToUpdate"
+        mock_text_input.return_value = "UpdatedSkill"
+        mock_submit_button.return_value = True
+
+        try:
+            Update_Skill.main()
+            print("✅ Test test_update_skill passed!")
+        except AssertionError as e:
+            print(f"❌ Test test_update_skill failed: {e}")    
     # Test for parse_content
     # def test_parse_content_extracts_skills(self):
     #     print("Testing second testcase: test_parse_content_extracts_skills...")
